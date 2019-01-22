@@ -5,7 +5,7 @@ import './item-list.css';
 export default class ItemList extends Component {
   render() {
     return (
-      <ul className="item-list list-group">
+      <ul className="item-list list-group mb-4">
         <li className="list-group-item">
           Luke Skywalker
         </li>
