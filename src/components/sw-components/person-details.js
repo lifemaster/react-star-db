@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import ItemDetails, { Record } from '../item-details';
 import { withSwapiService } from '../hoc-helpers';
 
@@ -18,4 +19,4 @@ const mapMethodsToProps = (swapiService) => {
   };
 }
 
-export default withSwapiService(mapMethodsToProps)(PersonDetails);
+export default withRouter(withSwapiService(mapMethodsToProps)(PersonDetails));

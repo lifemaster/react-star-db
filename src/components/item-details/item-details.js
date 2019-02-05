@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './item-details.css';
 import ErrorButton from '../error-button';
+import ErrorIndicator from '../error-indicator';
+import Spinner from '../spinner';
 
 const Record = ({ item, field, label }) => {
   return (
@@ -18,6 +20,8 @@ export default class ItemDetails extends Component {
   state = {
     item: null,
     image: null,
+    isLoading: false,
+    hasError: null
   };
 
   updateItem() {
@@ -27,12 +31,14 @@ export default class ItemDetails extends Component {
       return;
     }
 
+    this.setState({ isLoading: true, hasError: false });
+
     getData(itemId)
       .then(item => {
         this.setState({
           item,
           image: getImageUrl(item),
-          loading: false
+          isLoading: false
         });
       })
       .catch(this.onError);
@@ -57,12 +63,24 @@ export default class ItemDetails extends Component {
     }
   }
 
+  componentDidCatch() {
+    this.setState({ hasError: true });
+  }
+
   onError = (err) => {
-    this.setState({ loading: false, error: true });
+    this.setState({ isLoading: false, error: true });
   }
 
   render() {
-    const { item, image } = this.state;
+    const { item, image, hasError, isLoading } = this.state;
+
+    if(isLoading) {
+      return <Spinner />
+    }
+
+    if (hasError) {
+      return <ErrorIndicator />;
+    }
 
     if (!item) {
       return <span>Select a item from a list</span>;
